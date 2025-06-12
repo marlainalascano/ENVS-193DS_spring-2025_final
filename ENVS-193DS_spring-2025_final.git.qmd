@@ -213,8 +213,7 @@ ggplot(new_data, aes(x = edge_distance, y = prob, color = factor(season))) +
 ### i)
 
 **Figure 1. Predicted Probability of Swift Parrot Nest Box Occupancy by Distance to Forest Edge**\
-This figure shows the predicition of probability of the Swift Parrot occupancy in nest boxes in corelation to its distance to the forrest's edge during the breeding season 2016 (purple) and 2019 (pink). The sahded regions represent 95% confidence intervals and the lines represent the predicted trend. These values are predicted based on logistic regression model with both season and edge distance as predictors.
-**Data source**: Stojanovic et al. (2021). Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
+This figure shows the predicition of probability of the Swift Parrot occupancy in nest boxes in corelation to its distance to the forrest's edge during the breeding season 2016 (purple) and 2019 (pink). The sahded regions represent 95% confidence intervals and the lines represent the predicted trend. These values are predicted based on logistic regression model with both season and edge distance as predictors. **Data source**: Stojanovic et al. (2021). Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
 
 ### j)
 
