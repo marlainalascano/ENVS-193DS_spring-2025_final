@@ -152,21 +152,24 @@ model4 <- glm(sp ~ edge_distance, data = data, family = "binomial") # distance o
 ### f)
 
 ```{r}
+
 simulation1 <- simulateResiduals(model1)
 plot(simulation1, main = "Diagnostics for Model 1") #Model 1 diagnostics
-
+  
 simulation3 <- simulateResiduals(model3)
 plot(simulation3, main = "Diagnostics for Model 3") #Model 3 diagnostics
 
 simulation4 <- simulateResiduals(model4)
 plot(simulation4, main = "Diagnostics for Model 4") #Model 4 diagnostics
 
+simulation2 <- simulateResiduals(model2)
+plot(simulation2, main = "Diagnostics for Model 2") #Model 2 diagnostics
 
 ```
 
 ```{r}
-simulation2 <- simulateResiduals(model2)
-plot(simulation2, main = "Diagnostics for Model 2") #Model 2 diagnostics
+
+
 ```
 
 ### g)
@@ -230,7 +233,7 @@ edge_points <- data.frame(
 
 edge_points <- expand.grid(
   edge_distance = c(0, 900),
-  season = c(2016, 2019) #Repeat each edge distance for both seasons
+  season = factor(c(2016, 2019), levels = levels(data$season))  #match factor levels
 )
 
 edge_pred <- predict(model2, newdata = edge_points, type = "link", se.fit = TRUE) #Predict on link scale
@@ -259,6 +262,6 @@ All the graphs in Homework 2 and 3 have a clean look to them, including an axis 
 
 In the Homework 3 graph, we can see a pattern of a higher mood score when more protein is consumed and more sleep is had, showing a pattern of better well being with these factors. In the Homework 2 visuals, the Q-Q plot shows deviation from the normal in the tails, most likely due to PM2.5 outliers. The box plot shows a higher median and more extreme outliers, and the line plot shows higher PM2.5 levels over time, especially in the start of December. We can see these differences arise because the Homework 3 graph is emphasizing categorical interactions while the Homework 2 graphs are exploring distribution and variation in environmental trends.
 
-Some Feedback I got in week 9 was to make sure my visuals are clear and readable, and tell the story I am trying to tell. I implemented this in my Homework 3 graph by pairing a bar chart and a scatterplot, so you can see 2 things at once without getting confused at what is happening. I was also told to be careful with my placement of things like the legend and titles so that they don't overlap. I implemented this in my Homework 3 as well, making sure my visual was perfect and professional before turning it in. 
+Some Feedback I got in week 9 was to make sure my visuals are clear and readable, and tell the story I am trying to tell. I implemented this in my Homework 3 graph by pairing a bar chart and a scatter plot, so you can see 2 things at once without getting confused at what is happening. I was also told to be careful with my placement of things like the legend and titles so that they don't overlap. I implemented this in my Homework 3 as well, making sure my visual was perfect and professional before turning it in. 
 
 \
