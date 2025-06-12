@@ -1,0 +1,145 @@
+---
+title: "ENVS-193DS_spring-2025_final.git"
+author: "Marlaina Lascano"
+date: "06/11/25"
+format: docx
+---
+
+## Quarto
+
+Git Hub Repo - <https://github.com/marlainalascano/ENVS-193DS_spring-2025_final>
+
+```{r}
+#load packages 
+library(tidyverse)
+
+library(gt)
+
+library(lubridate)
+library(viridis)
+library(janitor)
+library(ggplot2)
+library(readxl)
+
+library(ggpubr)
+
+library(dplyr)
+
+sst <- read_csv("data/SST_update2023.csv") #read in problem 2 data
+```
+
+Problem 1
+
+a\)
+
+In part 1, the co-worker likely used a **correlation analysis or a linear regression** . The reported p-value of 0.03 suggests they were testing whether the slope of the relationship between the two variables is significantly different from zero.
+
+In part 2, the co-worker likely used a **one-way ANOVA (Analysis of Variance)**. The p-value of 0.02 suggests that at least one group has a significantly different mean nitrogen load compared to the others.
+
+b\)
+
+1.  A post-hoc test like Tukey’s Honest Significant Difference (HSD) could be performed to determine which specific nitrogen sources differ significantly from each other. Tukey’s HSD would allow you to tell whether fertilizer sources have significantly higher nitrogen loads than atmospheric deposition or grasslands, which is crucial for making management recommendations.
+
+2\.
+
+Including a table or figure that reports the **mean nitrogen load and standard deviation for each source** would help someone understand the **variability** of nitrogen contributions from each source. Providing descriptive statistics gives context to the ANOVA results and helps non-technical audiences grasp which sources are contributing the most nitrogen on average.
+
+c\)
+
+Problem 2
+
+a\)
+
+```{r}
+
+#cleaning data
+sst_clean <- sst |> 
+  select(date, temp) |> #get rid of long and lat
+  mutate(
+    year = year(date),                    #extract year
+    month = month(date, label = TRUE)    #extract month
+  ) |> 
+  
+  group_by(year, month) |> #group by year and month
+  summarise(mean_monthly_sst = mean(temp, na.rm = TRUE)) |> #calculate monthly sst
+  
+  mutate(
+    year = as.factor(year),
+    month = factor(month, levels = month.abb, ordered = TRUE) #order months in correct order
+  ) |> 
+  ungroup()
+
+
+sst_clean |> 
+  slice_sample(n = 5) #showing 5 random rows of cleaned data
+
+str(sst_clean) #show the requested structure
+```
+
+b\)
+
+```{r}
+sst_subset <- sst_clean %>% #use clean data
+  filter(year %in% c("2018", "2019", "2020", "2021", "2022", "2023")) #only want 2018-2023
+
+#creating plot
+ggplot(data = sst_subset, aes(x = month, y = mean_monthly_sst, group = year, color = year)) +
+  geom_line(linewidth = 1) + #size of connecting lines
+  geom_point(size = 2) + #size of dots
+  scale_color_manual(
+    values = colorRampPalette(c("#7cadf5", "#08306b"))(6)  #blue gradient
+  ) +
+  labs(
+    x = "Month", #x axis title
+    y = "Mean monthly sea surface temperature (°C)", #y axis title
+    color = "Year" #legend title
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = c(0.1, 0.7), #legend on the top left
+    legend.background = element_rect(fill = "white", color = "white"), #no border on table of contents
+    panel.border = element_rect(color = "black", fill = NA), #outline of box in graph
+    panel.background = element_rect(fill = "white"), #background color is white
+    panel.grid.major = element_blank(),  #remove grid lines
+    panel.grid.minor = element_blank(),  #remove grid lines
+    axis.title = element_text(size = 12), #size of axis title
+     axis.text = element_text(size = 10), #size of axis text
+    legend.title = element_text(size = 12), #size of legend title
+    legend.text = element_text(size = 10) #size of legend text internal
+  )
+```
+
+Problem 3
+
+a\)
+
+Biologically the 1's and 0's in this data set represent what bird, if any, is in the nest box during the given breeding season. Depending on which column you look at 1 means there is a Swift Parrot, Tree Martin, Common Starling, or no bird.
+
+b\)
+
+Swift Parrots are a critically endangered species while tree Martins and Common Starlings are more common and considered competition for different recources.
+
+c\)
+
+The 'seasons' they are talking about are the 2016 and 2019 summer breeding seasons when parrots bred at the study area. These seasons differ because a lot can change in 3 years, such as, average global temperature, management practices, weather patterns, populations of different supporting or threatening species, and increased or decreased compettition.
+
+d\)
+
+```{r}
+occdist <- read_csv("data/occdist.csv")
+```
+
+Problem 4
+
+a\)
+
+The Homework 3 graph is an effective bar chart, using color and categorical grouping (sleep and protein levels) to emphasize mood differences and appeal emotionally. It also compares multiple variables at one time to find the optimal mix.\
+In contrast, the Homework 2 visualizations are more straightforward: There is a Q-Q plot with confidence intervals, used to check normality, a boxplot showing distributions and outliers of PM2.5 levels by location, and a time series line plot comparing PM2.5 levels over time across multiple locations. These graphs focus on data exploration and distribution rather than emotional storytelling.
+
+All the graphs in Homework 2 and 3 have a clean look to them, including an axis title to help the view interpret the trends and differences. Each plot involves comparisons from 2 or more categories whether that be location or conditions. They also use individual data points to show the variability.
+
+In the Homework 3 graph, we can see a pattern of a higher mood score when more protein is consumed and more sleep is had, showing a pattern of better well being with these factors. In the Homework 2 visuals, the Q-Q plot shows deviation from the normal in the tails, most likely due to PM2.5 outliers. The box plot shows a higher median and more extreme outliers, and the line plot shows higher PM2.5 levels over time, especially in the start of December. We can see these differences arise because the Homework 3 graph is emphasizing categorical interactions while the Homework 2 graphs are exploring distribution and variation in environmental trends.
+
+Some Feedback I got in week 9 was to make sure my visuals are clear and readable, and tell the story I am trying to tell. I implemented this in my Homework 3 graph by pairing a bar chart and a scatterplot, so you can see 2 things at once without getting confused at what is happening. I was also told to be careful with my placement of things like the legend and titles so that they don't overlap. I implemented this in my Homework 3 as well, making sure my visual was perfect and professional before turning it in. 
+
+\
