@@ -24,6 +24,7 @@ library(ggpubr)
 library(dplyr)
 
 sst <- read_csv("data/SST_update2023.csv") #read in problem 2 data
+data <- read_csv("data/occdist.csv") #read in problem 3 data
 ```
 
 ## Problem 1
@@ -134,13 +135,13 @@ The 'seasons' they are talking about are the 2016 and 2019 summer breeding seaso
 
 ```{r}
 
-data <- read_csv("data/occdist.csv") %>%
-  rename(edge_distance = `edge distance`)%>% #cleaning data
-  mutate(season = as.factor(season))
+data <- data %>%
+  rename(edge_distance = `edge distance`) %>%
+  mutate(season = as.factor(season)) #cleaning data
 
 model1 <- glm(sp ~ 1, data = data, family = "binomial") #intercept only null model
 
-model2 <- glm(sp ~ season + edge_distance, data = data, family = "binomial") #sason + edge saturated model
+model2 <- glm(sp ~ season + edge_distance, data = data, family = "binomial") #sason and edge saturated model
 
 model3 <- glm(sp ~ season, data = data, family = "binomial") #season only
 
@@ -164,11 +165,6 @@ plot(simulation4, main = "Diagnostics for Model 4") #Model 4 diagnostics
 
 simulation2 <- simulateResiduals(model2)
 plot(simulation2, main = "Diagnostics for Model 2") #Model 2 diagnostics
-
-```
-
-```{r}
-
 
 ```
 
@@ -253,8 +249,7 @@ edge_points #shows output
 
 ### a)
 
-The Homework 3 graph is an effective bar chart, using color and categorical grouping (sleep and protein levels) to emphasize mood differences and appeal emotionally. It also compares multiple variables at one time to find the optimal mix.\
-In contrast, the Homework 2 visualizations are more straightforward: There is a Q-Q plot with confidence intervals, used to check normality, a box plot showing distributions and outliers of PM2.5 levels by location, and a time series line plot comparing PM2.5 levels over time across multiple locations. These graphs focus on data exploration and distribution rather than emotional storytelling.
+The Homework 3 graph is an effective bar chart, using color and categorical grouping (sleep and protein levels) to emphasize mood differences. It also compares multiple variables at one time to find the optimal mix. The Homework 2 visualizations are more straightforward: There is a Q-Q plot with confidence intervals, used to check normality, a box plot showing distributions and outliers of PM2.5 levels by location, and a time series line plot comparing PM2.5 levels over time across multiple locations. These graphs focus on data exploration and distribution rather than emotional storytelling.
 
 All the graphs in Homework 2 and 3 have a clean look to them, including an axis title to help the view interpret the trends and differences. Each plot involves comparisons from 2 or more categories whether that be location or conditions. They also use individual data points to show the variability.
 
