@@ -208,8 +208,8 @@ ggplot(new_data, aes(x = edge_distance, y = prob, color = factor(season))) +
     color = "Season", 
     fill = "Season" #legend title
   ) +
-  scale_color_manual(values = c("#2a9d8f", "#e76f51")) +
-  scale_fill_manual(values = c("#2a9d8f", "#e76f51")) +
+  scale_color_manual(values = c("#5b4d9f", "#e01f51")) +
+  scale_fill_manual(values = c("#5b4d9f", "#e01f51")) +
   theme_minimal(base_size = 14) +
   theme(panel.grid = element_blank())
 ```
@@ -217,9 +217,7 @@ ggplot(new_data, aes(x = edge_distance, y = prob, color = factor(season))) +
 ### i)
 
 **Figure 1. Predicted Probability of Swift Parrot Nest Box Occupancy by Distance to Forest Edge**\
-
-This figure shows model predictions of the probability of Swift Parrot occupancy in nest boxes as a function of distance to the forest edge in two different breeding seasons (2016 and 2019), with 95% confidence intervals. Predicted values are based on a logistic regression model including both season and edge distance as predictors.\
-
+This figure shows the predicition of probability of the Swift Parrot occupancy in nest boxes in corelation to its distance to the forrest's edge during the breeding season 2016 and 2019 and 95% confidence intervals. These values are predicted based on logistic regression model with both season and edge distance as predictors.
 **Data source**: Stojanovic et al. (2021). Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
 
 ### j)
@@ -256,7 +254,7 @@ edge_points #shows output
 ### a)
 
 The Homework 3 graph is an effective bar chart, using color and categorical grouping (sleep and protein levels) to emphasize mood differences and appeal emotionally. It also compares multiple variables at one time to find the optimal mix.\
-In contrast, the Homework 2 visualizations are more straightforward: There is a Q-Q plot with confidence intervals, used to check normality, a boxplot showing distributions and outliers of PM2.5 levels by location, and a time series line plot comparing PM2.5 levels over time across multiple locations. These graphs focus on data exploration and distribution rather than emotional storytelling.
+In contrast, the Homework 2 visualizations are more straightforward: There is a Q-Q plot with confidence intervals, used to check normality, a box plot showing distributions and outliers of PM2.5 levels by location, and a time series line plot comparing PM2.5 levels over time across multiple locations. These graphs focus on data exploration and distribution rather than emotional storytelling.
 
 All the graphs in Homework 2 and 3 have a clean look to them, including an axis title to help the view interpret the trends and differences. Each plot involves comparisons from 2 or more categories whether that be location or conditions. They also use individual data points to show the variability.
 
