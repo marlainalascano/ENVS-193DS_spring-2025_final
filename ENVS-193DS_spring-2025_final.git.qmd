@@ -2,7 +2,7 @@
 title: "ENVS-193DS_spring-2025_final.git"
 author: "Marlaina Lascano"
 date: "06/11/25"
-format: docx
+format: html
 ---
 
 ## Quarto
