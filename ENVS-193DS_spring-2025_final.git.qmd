@@ -14,41 +14,38 @@ Git Hub Repo - <https://github.com/marlainalascano/ENVS-193DS_spring-2025_final>
 library(tidyverse)
 library(DHARMa) #3f
 library(gt)
-
+library(MuMIn) #3g
 library(lubridate)
 library(viridis)
 library(janitor)
 library(ggplot2)
 library(readxl)
-
 library(ggpubr)
-
 library(dplyr)
 
 sst <- read_csv("data/SST_update2023.csv") #read in problem 2 data
 ```
 
-Problem 1
+## Problem 1
 
-a\)
+### a)
 
-In part 1, the co-worker likely used a **correlation analysis or a linear regression** . The reported p-value of 0.03 suggests they were testing whether the slope of the relationship between the two variables is significantly different from zero.
+In part 1, the co-worker likely used a correlation analysis or a linear regression . The reported p-value of 0.03 suggests they were testing whether the slope of the relationship between the two variables is significantly different from zero.
 
-In part 2, the co-worker likely used a **one-way ANOVA (Analysis of Variance)**. The p-value of 0.02 suggests that at least one group has a significantly different mean nitrogen load compared to the others.
+In part 2, the co-worker might have used a one-way ANOVA (Analysis of Variance). The p-value of 0.02 suggests that at least one group has a significantly different mean nitrogen load compared to the others.
 
-b\)
+### b)
 
 1.  A post-hoc test like Tukey’s Honest Significant Difference (HSD) could be performed to determine which specific nitrogen sources differ significantly from each other. Tukey’s HSD would allow you to tell whether fertilizer sources have significantly higher nitrogen loads than atmospheric deposition or grasslands, which is crucial for making management recommendations.
+2.  Including a table or summary statistic that reports the mean nitrogen load and standard deviation for each source would help someone understand the variability of nitrogen contributions from each source. Providing descriptive statistics gives context to the ANOVA results and helps audiences grasp which sources are contributing the most nitrogen on average and know that there is more than just a difference.
 
-2\.
+### c)
 
-Including a table or figure that reports the **mean nitrogen load and standard deviation for each source** would help someone understand the **variability** of nitrogen contributions from each source. Providing descriptive statistics gives context to the ANOVA results and helps non-technical audiences grasp which sources are contributing the most nitrogen on average.
+1.  
 
-c\)
+## Problem 2
 
-Problem 2
-
-a\)
+### a)
 
 ```{r}
 
@@ -76,7 +73,7 @@ sst_clean |>
 str(sst_clean) #show the requested structure
 ```
 
-b\)
+### b)
 
 ```{r}
 sst_subset <- sst_clean %>% #use clean data
@@ -109,17 +106,17 @@ ggplot(data = sst_subset, aes(x = month, y = mean_monthly_sst, group = year, col
   )
 ```
 
-Problem 3
+## Problem 3
 
-a\)
+### a)
 
 Biologically the 1's and 0's in this data set represent what bird, if any, is in the nest box during the given breeding season. Depending on which column you look at 1 means there is a Swift Parrot, Tree Martin, Common Starling, or no bird.
 
-b\)
+### b)
 
 Swift Parrots are a critically endangered species while tree Martins and Common Starlings are more common and considered competition for different recources.
 
-c\)
+### c)
 
 The 'seasons' they are talking about are the 2016 and 2019 summer breeding seasons when parrots bred at the study area. These seasons differ because a lot can change in 3 years, such as, average global temperature, management practices, weather patterns, populations of different supporting or threatening species, and increased or decreased compettition.
 
@@ -132,7 +129,7 @@ The 'seasons' they are talking about are the 2016 and 2019 summer breeding seaso
 | 3 | Yes | No | Season-only model: Includes only season as predictor |
 | 4 | No | Yes | Distance-only model: Includes only edge distance as predictor |
 
-e\)
+### e)
 
 ```{r}
 
@@ -151,7 +148,7 @@ model4 <- glm(sp ~ edge_distance, data = data, family = "binomial") # distance o
 
 ```
 
-f\)
+### f)
 
 ```{r}
 simulation1 <- simulateResiduals(model1)
@@ -168,9 +165,88 @@ plot(simulation4, main = "Diagnostics for Model 4") #Model 4 diagnostics
 
 ```
 
-Problem 4
+### g)
 
-a\)
+```{r}
+model.sel(model1, model2, model3, model4)
+```
+
+The best model as determined by Akaike’s Information Criterion (AIC) was model2. This model had the lowest AICc value (226.3), meaning it has the balance of goodness-of-fit and model simplicity compared to the other models.
+
+### h)
+
+```{r}
+new_data <- expand.grid(
+  edge_distance = seq(0, 900, by = 10),
+  season = factor(c(2016, 2019), levels = levels(data$season))  #new dataframe for edge distances during both seasons
+)
+
+
+preds <- predict(model2, newdata = new_data, type = "link", se.fit = TRUE) #Get predicted probabilities and confidence intervals
+new_data$fit <- preds$fit
+new_data$se <- preds$se.fit
+
+new_data <- new_data %>%
+  mutate(prob = plogis(fit),
+         lower = plogis(fit - 1.96 * se),
+         upper = plogis(fit + 1.96 * se)) #Convert from logit to probability scale
+
+
+ggplot(new_data, aes(x = edge_distance, y = prob, color = factor(season))) +
+  geom_line(size = 1) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = factor(season)), alpha = 0.2, color = NA) +
+  labs(
+    x = "Distance to Forest Edge (m)", #x axis title
+    y = "Probability of Swift Parrot Occupancy", #y axis title
+    color = "Season", 
+    fill = "Season" #legend title
+  ) +
+  scale_color_manual(values = c("#2a9d8f", "#e76f51")) +
+  scale_fill_manual(values = c("#2a9d8f", "#e76f51")) +
+  theme_minimal(base_size = 14) +
+  theme(panel.grid = element_blank())
+```
+
+### i)
+
+**Figure 1. Predicted Probability of Swift Parrot Nest Box Occupancy by Distance to Forest Edge**\
+
+This figure shows model predictions of the probability of Swift Parrot occupancy in nest boxes as a function of distance to the forest edge in two different breeding seasons (2016 and 2019), with 95% confidence intervals. Predicted values are based on a logistic regression model including both season and edge distance as predictors.\
+
+**Data source**: Stojanovic et al. (2021). Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
+
+### j)
+
+```{r}
+
+edge_points <- data.frame(
+  edge_distance = c(0, 900),
+  season = c(2016, 2016, 2019, 2019) # new data frame for edge distances we are interested in
+)
+
+edge_points <- expand.grid(
+  edge_distance = c(0, 900),
+  season = c(2016, 2019) #Repeat each edge distance for both seasons
+)
+
+edge_pred <- predict(model2, newdata = edge_points, type = "link", se.fit = TRUE) #Predict on link scale
+
+edge_points$fit <- edge_pred$fit
+edge_points$se <- edge_pred$se.fit
+edge_points <- edge_points %>%
+  mutate(prob = plogis(fit),
+         lower = plogis(fit - 1.96 * se),
+         upper = plogis(fit + 1.96 * se)) #Add predictions and convert to probability scale
+
+
+edge_points #shows output
+```
+
+### k)
+
+## Problem 4
+
+### a)
 
 The Homework 3 graph is an effective bar chart, using color and categorical grouping (sleep and protein levels) to emphasize mood differences and appeal emotionally. It also compares multiple variables at one time to find the optimal mix.\
 In contrast, the Homework 2 visualizations are more straightforward: There is a Q-Q plot with confidence intervals, used to check normality, a boxplot showing distributions and outliers of PM2.5 levels by location, and a time series line plot comparing PM2.5 levels over time across multiple locations. These graphs focus on data exploration and distribution rather than emotional storytelling.
