@@ -161,7 +161,7 @@ simulation3 <- simulateResiduals(model3)
 plot(simulation3, main = "Diagnostics for Model 3") #Model 3 diagnostics
 
 simulation4 <- simulateResiduals(model4)
-plot(simulation4, main = "Diagnostics for Model 4") #Model 4 diagnostics
+plot(simulation4, main = "Diagnostics for Model 4", quantreg = FALSE) #Model 4 diagnostics
 
 simulation2 <- simulateResiduals(model2)
 plot(simulation2, main = "Diagnostics for Model 2") #Model 2 diagnostics
@@ -196,7 +196,7 @@ new_data <- new_data %>%
 
 
 ggplot(new_data, aes(x = edge_distance, y = prob, color = factor(season))) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_ribbon(aes(ymin = lower, ymax = upper, fill = factor(season)), alpha = 0.2, color = NA) +
   labs(
     x = "Distance to Forest Edge (m)", #x axis title
@@ -213,34 +213,31 @@ ggplot(new_data, aes(x = edge_distance, y = prob, color = factor(season))) +
 ### i)
 
 **Figure 1. Predicted Probability of Swift Parrot Nest Box Occupancy by Distance to Forest Edge**\
-This figure shows the predicition of probability of the Swift Parrot occupancy in nest boxes in corelation to its distance to the forrest's edge during the breeding season 2016 and 2019 and 95% confidence intervals. These values are predicted based on logistic regression model with both season and edge distance as predictors.
+This figure shows the predicition of probability of the Swift Parrot occupancy in nest boxes in corelation to its distance to the forrest's edge during the breeding season 2016 (purple) and 2019 (pink). The sahded regions represent 95% confidence intervals and the lines represent the predicted trend. These values are predicted based on logistic regression model with both season and edge distance as predictors.
 **Data source**: Stojanovic et al. (2021). Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
 
 ### j)
 
 ```{r}
 
-edge_points <- data.frame(
-  edge_distance = c(0, 900),
-  season = c(2016, 2016, 2019, 2019) # new data frame for edge distances we are interested in
+pred_points <- data.frame( #new data frame
+  edge_distance = c(0, 0, 900, 900), #distance
+  season = factor(c(2016, 2019, 2016, 2019), levels = levels(data$season)) #seasons
 )
 
-edge_points <- expand.grid(
-  edge_distance = c(0, 900),
-  season = factor(c(2016, 2019), levels = levels(data$season))  #match factor levels
-)
+pred_results <- predict(model2, newdata = pred_points, type = "link", se.fit = TRUE) #getting predictions for model 2
 
-edge_pred <- predict(model2, newdata = edge_points, type = "link", se.fit = TRUE) #Predict on link scale
+pred_points$fit <- pred_results$fit #predicted log odds
+pred_points$se <- pred_results$se.fit #se of log odds
 
-edge_points$fit <- edge_pred$fit
-edge_points$se <- edge_pred$se.fit
-edge_points <- edge_points %>%
-  mutate(prob = plogis(fit),
-         lower = plogis(fit - 1.96 * se),
-         upper = plogis(fit + 1.96 * se)) #Add predictions and convert to probability scale
+pred_points <- pred_points %>%
+  mutate(
+    prob = plogis(fit), #predicted probability
+    lower = plogis(fit - 1.96 * se), #lower 95%ci
+    upper = plogis(fit + 1.96 * se) #upper 95%ci
+  )
 
-
-edge_points #shows output
+pred_points #viewable output
 ```
 
 ### k)
