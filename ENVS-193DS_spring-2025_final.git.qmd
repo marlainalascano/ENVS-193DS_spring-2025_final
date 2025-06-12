@@ -12,7 +12,7 @@ Git Hub Repo - <https://github.com/marlainalascano/ENVS-193DS_spring-2025_final>
 ```{r}
 #load packages 
 library(tidyverse)
-
+library(DHARMa) #3f
 library(gt)
 
 library(lubridate)
@@ -53,7 +53,7 @@ a\)
 ```{r}
 
 #cleaning data
-sst_clean <- sst |> 
+sst_clean <- sst|> 
   select(date, temp) |> #get rid of long and lat
   mutate(
     year = year(date),                    #extract year
@@ -123,10 +123,49 @@ c\)
 
 The 'seasons' they are talking about are the 2016 and 2019 summer breeding seasons when parrots bred at the study area. These seasons differ because a lot can change in 3 years, such as, average global temperature, management practices, weather patterns, populations of different supporting or threatening species, and increased or decreased compettition.
 
-d\)
+### d. Table of Models
+
+| Model \# | Season Included | Distance from Edge Included | Model Description |
+|--------------|--------------|--------------|-------------------------------|
+| 1 | No | No | Null model: Intercept only (no predictors) |
+| 2 | Yes | Yes | Saturated model: Includes both season and edge distance |
+| 3 | Yes | No | Season-only model: Includes only season as predictor |
+| 4 | No | Yes | Distance-only model: Includes only edge distance as predictor |
+
+e\)
 
 ```{r}
-occdist <- read_csv("data/occdist.csv")
+
+data <- read_csv("data/occdist.csv") %>%
+  rename(edge_distance = `edge distance`)%>% #cleaning data
+  mutate(season = as.factor(season))
+
+model1 <- glm(sp ~ 1, data = data, family = "binomial") #intercept only null model
+
+model2 <- glm(sp ~ season + edge_distance, data = data, family = "binomial") #sason + edge saturated model
+
+model3 <- glm(sp ~ season, data = data, family = "binomial") #season only
+
+model4 <- glm(sp ~ edge_distance, data = data, family = "binomial") # distance only
+
+
+```
+
+f\)
+
+```{r}
+simulation1 <- simulateResiduals(model1)
+plot(simulation1, main = "Diagnostics for Model 1") #Model 1 diagnostics
+
+simulation2 <- simulateResiduals(model2)
+plot(simulation2, main = "Diagnostics for Model 2") #Model 2 diagnostics
+
+simulation3 <- simulateResiduals(model3)
+plot(simulation3, main = "Diagnostics for Model 3") #Model 3 diagnostics
+
+simulation4 <- simulateResiduals(model4)
+plot(simulation4, main = "Diagnostics for Model 4") #Model 4 diagnostics
+
 ```
 
 Problem 4
