@@ -242,6 +242,8 @@ pred_points #viewable output
 
 ### k)
 
+The probability predicted for the Swift Parrot nest box occupancy is higher when the distance to forest edge was (0m) compared to (900m) in both seasons. It was found that in 2016, the probability at 0m was 48% while in 2019 it was 30% and as we move to the 900m mark those percents drop to 12% and 6%. In Figure1, the negative relationship between distance and occupancy probibility is shown when both lines have a clear downward trend. THis pattern is most likely due to the Swift Parrots' habitual preference for food availability, and or animal communities found at the 0m mark which may change or diminish as you move to larger distances.
+
 ## Problem 4
 
 ### a)
