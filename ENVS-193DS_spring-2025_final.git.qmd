@@ -204,8 +204,8 @@ ggplot(new_data, aes(x = edge_distance, y = prob, color = factor(season))) +
     color = "Season", 
     fill = "Season" #legend title
   ) +
-  scale_color_manual(values = c("#5b4d9f", "#e01f51")) +
-  scale_fill_manual(values = c("#5b4d9f", "#e01f51")) +
+  scale_color_manual(values = c("#5b4d9f", "#d95f02")) +
+  scale_fill_manual(values = c("#5b4d9f", "#d95f02")) +
   theme_minimal(base_size = 14) +
   theme(panel.grid = element_blank())
 ```
