@@ -155,15 +155,18 @@ model4 <- glm(sp ~ edge_distance, data = data, family = "binomial") # distance o
 simulation1 <- simulateResiduals(model1)
 plot(simulation1, main = "Diagnostics for Model 1") #Model 1 diagnostics
 
-simulation2 <- simulateResiduals(model2)
-plot(simulation2, main = "Diagnostics for Model 2") #Model 2 diagnostics
-
 simulation3 <- simulateResiduals(model3)
 plot(simulation3, main = "Diagnostics for Model 3") #Model 3 diagnostics
 
 simulation4 <- simulateResiduals(model4)
 plot(simulation4, main = "Diagnostics for Model 4") #Model 4 diagnostics
 
+
+```
+
+```{r}
+simulation2 <- simulateResiduals(model2)
+plot(simulation2, main = "Diagnostics for Model 2") #Model 2 diagnostics
 ```
 
 ### g)
