@@ -41,7 +41,8 @@ In part 2, the co-worker might have used a one-way ANOVA (Analysis of Variance).
 
 ### c)
 
-1.  
+1.  As th distance from the headwater increases, there is a statistically significant corelation with the annual total nitrogen load (kg year-1), which suggests a possible pattern in water contamination like nutritional build up or runoff. (Statistical test: Pearson correlation; r = \[correlation coefficient\], p = 0.03, α = 0.05)
+2.  Through our tests we observed a significant variation in average nitrogen load across different sources, meaning that some sources may contribute more to nutritional pollution and contamination than others. (Statistical test: ANOVA; F = (F stat), df = (deg freedom), p = 0.02, α = 0.05)
 
 ## Problem 2
 
@@ -118,16 +119,16 @@ Swift Parrots are a critically endangered species while tree Martins and Common 
 
 ### c)
 
-The 'seasons' they are talking about are the 2016 and 2019 summer breeding seasons when parrots bred at the study area. These seasons differ because a lot can change in 3 years, such as, average global temperature, management practices, weather patterns, populations of different supporting or threatening species, and increased or decreased compettition.
+The 'seasons' they are talking about are the 2016 and 2019 summer breeding seasons when parrots bred at the study area. These seasons differ because a lot can change in 3 years, such as, average global temperature, management practices, weather patterns, populations of different supporting or threatening species, and increased or decreased compettition if other populations change over the years.
 
 ### d. Table of Models
 
 | Model \# | Season Included | Distance from Edge Included | Model Description |
-|--------------|--------------|--------------|-------------------------------|
-| 1 | No | No | Null model: Intercept only (no predictors) |
-| 2 | Yes | Yes | Saturated model: Includes both season and edge distance |
-| 3 | Yes | No | Season-only model: Includes only season as predictor |
-| 4 | No | Yes | Distance-only model: Includes only edge distance as predictor |
+|----------|-----------------|-----------------------------|-------------------|
+| 1        | No              | No                          | Null model        |
+| 2        | Yes             | Yes                         | Saturated model   |
+| 3        | Yes             | No                          | Season model      |
+| 4        | No              | Yes                         | Distance model    |
 
 ### e)
 
